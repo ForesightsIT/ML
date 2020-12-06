@@ -109,13 +109,8 @@ Following concluding the fitted training, function to remove the AMLCompute obje
 from azureml.core.compute import ComputeTarget, AmlCompute # !1st
 if delete_completion == True:
     try:
-        # compute_target.delete()
-        # aml_compute.delete() # compute_cluster
         cluster_target.delete()
         print('\n Attemting to delete the ComputeTarget (if found)...')
-        # compute_target.wait_for_completion(show_output=False)  # verbose logging # True # !##
-        # print(compute_target.status.serialize())
-        # compute_target.wait_for_completion()
         print(cluster_target.status.serialize())
         cluster_target.wait_for_completion()
     except Exception as e:
