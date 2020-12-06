@@ -1,3 +1,4 @@
+
 # Optimizing an ML Pipeline in Azure
 
 ## Overview
@@ -34,7 +35,7 @@ HyperDrive used HyperDriveConfig to train a model imported from a traininig scri
 
 Training script defined the clean_data() function (before cleaning & spitting), only then to define the main() function.
 
-The hyperdrive config was used and it included both a parameter sampler, as well as an Early Stopping Policy (as its rationale of parameters choice to be explained below).
+The hyperdrive Parameters Tuning policies for the Logistic Regression [using --C (0.2 - 0.9) and --max-iter (50 - 100) values, with Accuracy as the performance metric and max concurrent runs as 4 nodes] configured both Hyperparameter Sampling, as well as an ETP (Early Stopping Policy) as its rationale of parameters choice to be explained below.  
 
 ## Chosen Parameter Sampler Benefit & Rationale Explanation: 
 
@@ -83,18 +84,9 @@ The AutoML algorithm of VotingEnsemble [that scored a %91.69 overall accuracy] o
 
 Potential improvements (of the modles future experiments) could be identified as:
 
-1.  Retraining Hyperparameter Tuning with HyperDrive using Bayesian and/or 'Entire Grid' sampling, and AUC as the primary metric (rather than accuracy).
-2.  Converging a (>100) higher iterations maximum for the train script Main() function.
-3.  Extending AutoML config to include more parameters.
-4.  Considering RNN and/or DNN frameworks (for retraining an SOTA model) in the config of AutoML and/or the train script.
-5.  Including top-level diagram of architecture or more diagrams of the overall pipeline and other ecosystem's microservices.
-6.  Enhancing TabularDatasets API use and/or considering FileDatasetdownloading public URLs to be mounted to a compute datastore.
-7.  Documenting XAI and [operationalizing] model [explanation] as a web service, using the [interpretability package] to explain ML models & predictions;
-8.  Getting the code to check 1st [before creation attempt] for existing compute targets [pending].
-9.  Exporting a Model to be run in Cloud Shell.
-10.  Exporting Models with ONNX to be deployed to a DLT connected Dapp device (e.g. iOS or Android mobile device).
-11.  Deploying web service by converting the trained model into a RESTful service that can be consumed by the other ecosystem microservices (including azure automation and/or logic apps) for optimal 'Decision Intelligence MLSecOps' synergy.
-12. Enabling App Insights and integration with Sentinel and/or CASB.
+1.  Retraining Hyperparameter Tuning with HyperDrive using Bayesian and/or 'Entire Grid' sampling (rather than Random sampling) can can improve the model performance (albeit, it could be cost prohibitive at times).
+2.  Configuring AUC as the primary metric (rather than accuracy) can improve the model imbalanced data foresights, given the current class imbalance problem of the dataset.
+3.  Converging a (>100) higher iterations maximum for the train script Main() function, which could lead to finding a more acurate model regularization that can generlize better.
 
 The justification reasons that such improvement ways could help the model is because they ought to improve the model outcome (such as to boost the performance, to generalize better, to avoid overfitting and/or outliers).
 
@@ -111,7 +103,7 @@ if delete_completion == True:
     try:
         cluster_target.delete()
         print('\n Attemting to delete the ComputeTarget (if found)...')
-        print(cluster_target.status.serialize())
+                print(cluster_target.status.serialize())
         cluster_target.wait_for_completion()
     except Exception as e:
         if '\n ComputeTarget Not Found!' in e.message:
